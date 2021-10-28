@@ -1,6 +1,6 @@
 package com.gyl.library.services;
 
-import com.gyl.library.model.entities.AuthorEntity;
+import com.gyl.library.entities.AuthorEntity;
 
 import java.util.List;
 

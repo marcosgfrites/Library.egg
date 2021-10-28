@@ -1,6 +1,6 @@
 package com.gyl.library.repositories;
 
-import com.gyl.library.model.entities.EditorialEntity;
+import com.gyl.library.entities.EditorialEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

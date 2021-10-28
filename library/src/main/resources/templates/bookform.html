@@ -21,33 +21,39 @@
                 <h5 class="text-white">Datos del Libro</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" action="" method="POST" autocomplete="off" th:action="@{/books/__${action}__}" th:object="${book}">
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/books/__${action}__}" th:object="${book}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_book" th:field="*{id_book}">
                 </div>
                 <div class="mb-3">
                     <label for="isbn" class="form-label text-white">[[#{book.isbn}]]</label>
                     <input type="number" class="form-control" id="isbn" th:field="*{isbn}" required>
+                    <div class="invalid-feedback"> [[#{NotNull.book.isbn}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="title" class="form-label text-white">[[#{book.title}]]</label>
                     <input type="text" class="form-control" id="title" th:field="*{title}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.book.title}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="year" class="form-label text-white">[[#{book.year}]]</label>
                     <input type="number" class="form-control" id="year" th:field="*{year}" required>
+                    <div class="invalid-feedback"> [[#{NotNull.book.year}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="copies" class="form-label text-white">[[#{book.copies}]]</label>
                     <input type="number" class="form-control" id="copies" th:field="*{copies}" required>
+                    <div class="invalid-feedback"> [[#{NotNull.book.copies}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="loanedCopies" class="form-label text-white">[[#{book.loanedcopies}]]</label>
                     <input type="number" class="form-control" id="loanedCopies" th:disabled="${action == 'save'}" th:field="*{loanedCopies}" th:required="${action == 'save'}">
+                    <div class="invalid-feedback"> [[#{NotNull.book.loanedcopies}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="remainingCopies" class="form-label text-white">[[#{book.remainingcopies}]]</label>
                     <input type="number" class="form-control" id="remainingCopies" th:disabled="${action == 'save'}" th:field="*{remainingCopies}" th:required="${action == 'save'}">
+                    <div class="invalid-feedback"> [[#{NotNull.book.remainingcopies}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="author" class="form-label text-white">[[#{book.author}]]</label>
@@ -55,6 +61,7 @@
                         <option value="" selected>Elija una opcion...</option>
                         <option th:each="author : ${authors}" th:text="${author.name}" th:value="${author.id_author}">[[${author.name}]]</option>
                     </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.book.author}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="editorial" class="form-label text-white">[[#{book.editorial}]]</label>
@@ -62,6 +69,7 @@
                         <option value="" selected>Elija una opcion...</option>
                         <option th:each="editorial : ${editorials}" th:text="${editorial.name}" th:value="${editorial.id_editorial}">[[${editorial.name}]]</option>
                     </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.book.editorial}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="activate" class="form-label text-white">[[#{book.activate}]]</label>
@@ -70,6 +78,7 @@
                         <option value="true">Habilitado</option>
                         <option value="false">Deshabilitado</option>
                     </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.book.activate}]] </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Libro' : 'Guardar Cambios'"></button>

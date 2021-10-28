@@ -1,6 +1,6 @@
 package com.gyl.library.repositories;
 
-import com.gyl.library.model.entities.AuthorEntity;
+import com.gyl.library.entities.AuthorEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

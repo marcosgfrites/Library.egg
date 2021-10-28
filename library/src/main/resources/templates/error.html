@@ -22,10 +22,10 @@
                             <img class="rounded mx-auto d-block my-5" th:src="@{/img/error.png}" alt="Error!" width="200" height="200">
                         </div>
                         <div class="card-body bg_danger">
-                            <h5 class="card-text" th:text="${title}"></h5>
+                            <h5 class="card-text">[[#{error.title}]]</h5>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="row mb-3">
-                                    <span th:text="${errors}"></span>
+                                    <span>[[#{error.message}]]</span>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="btn-group">

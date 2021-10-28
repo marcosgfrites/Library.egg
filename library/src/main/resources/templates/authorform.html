@@ -21,14 +21,14 @@
                 <h5 class="text-white">Datos del Autor</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" action="" method="POST" autocomplete="off" th:action="@{/authors/__${action}__}" th:object="${author}">
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/authors/__${action}__}" th:object="${author}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_author" th:field="*{id_author}">
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label text-white">[[#{author.name}]]</label>
                     <input type="text" class="form-control" id="name" th:placeholder="'Ingrese un '+ #{author.name}" th:field="*{name}" required>
-                    <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+                    <div class="invalid-feedback"> [[#{NotEmpty.author.name}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="activate" class="form-label text-white">[[#{author.activate}]]</label>
@@ -37,7 +37,7 @@
                         <option value="true">Habilitado</option>
                         <option value="false">Deshabilitado</option>
                     </select>
-                    <small class="form-text text-danger" th:if="${#fields.hasErrors('activate')}" th:errors="*{activate}"></small>
+                    <div class="invalid-feedback"> [[#{NotEmpty.author.activate}]] </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Autor' : 'Guardar Cambios'"></button>

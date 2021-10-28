@@ -21,13 +21,14 @@
                 <h5 class="text-white">Datos de la Editorial</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" action="" method="POST" autocomplete="off" th:action="@{/editorials/__${action}__}" th:object="${editorial}">
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/editorials/__${action}__}" th:object="${editorial}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_editorial" th:field="*{id_editorial}">
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label text-white">[[#{editorial.name}]]</label>
                     <input type="text" class="form-control" id="name" th:placeholder="'Ingrese un '+ #{editorial.name}" th:field="*{name}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.editorial.name}]] </div>
                 </div>
                 <div class="mb-3">
                     <label for="activate" class="form-label text-white">[[#{editorial.activate}]]</label>
@@ -36,6 +37,7 @@
                         <option value="true">Habilitado</option>
                         <option value="false">Deshabilitado</option>
                     </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.editorial.activate}]] </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Editorial' : 'Guardar Cambios'"></button>

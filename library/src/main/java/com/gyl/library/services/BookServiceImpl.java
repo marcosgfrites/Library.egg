@@ -1,14 +1,13 @@
 package com.gyl.library.services;
 
-import com.gyl.library.model.entities.AuthorEntity;
-import com.gyl.library.model.entities.BookEntity;
-import com.gyl.library.model.entities.EditorialEntity;
+import com.gyl.library.entities.AuthorEntity;
+import com.gyl.library.entities.BookEntity;
+import com.gyl.library.entities.EditorialEntity;
 import com.gyl.library.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -93,29 +92,6 @@ public class BookServiceImpl implements BookService {
     public boolean bookExist(Long isbn) {
         if (this.findBookByIsbn(isbn) != null) {
             return true;
-        }
-        return false;
-    }
-
-    public boolean titleLengthOK(String title) {
-        if (title.length() >= 10 && title.length() <= 50) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isbnLengthOK(Long isbn) {
-        if (isbn.toString().length() == 13) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean yearOK(Integer year) {
-        if (year.toString().length() == 4) {
-            if (year >= 1900 && year <= LocalDate.now().getYear()) {
-                return true;
-            }
         }
         return false;
     }

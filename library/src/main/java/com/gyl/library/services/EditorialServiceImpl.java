@@ -1,6 +1,6 @@
 package com.gyl.library.services;
 
-import com.gyl.library.model.entities.EditorialEntity;
+import com.gyl.library.entities.EditorialEntity;
 import com.gyl.library.repositories.EditorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,13 +67,6 @@ public class EditorialServiceImpl implements EditorialService{
 
     public boolean editorialExist(String name) {
         if (this.findEditorialByName(name) != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean nameLengthOK(String name) {
-        if(name.length() >= 3 && name.length() <= 50) {
             return true;
         }
         return false;

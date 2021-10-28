@@ -1,6 +1,6 @@
 package com.gyl.library.services;
 
-import com.gyl.library.model.entities.AuthorEntity;
+import com.gyl.library.entities.AuthorEntity;
 import com.gyl.library.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,13 +67,6 @@ public class AuthorServiceImpl implements AuthorService {
 
     public boolean authorExist(String name) {
         if (this.findAuthorByName(name) != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean nameLengthOK(String name) {
-        if (name.length() >= 10 && name.length() <= 50) {
             return true;
         }
         return false;

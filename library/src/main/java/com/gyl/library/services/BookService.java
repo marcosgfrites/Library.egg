@@ -1,8 +1,8 @@
 package com.gyl.library.services;
 
-import com.gyl.library.model.entities.AuthorEntity;
-import com.gyl.library.model.entities.BookEntity;
-import com.gyl.library.model.entities.EditorialEntity;
+import com.gyl.library.entities.AuthorEntity;
+import com.gyl.library.entities.BookEntity;
+import com.gyl.library.entities.EditorialEntity;
 
 import java.util.List;
 
