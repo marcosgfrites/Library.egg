@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Creación de Libros</title>
+</head>
+<body>
+<header th:replace="layout/template :: header"></header>
+
+<section name="bookform">
+    <div class="container my-2">
+        <h3 th:text="${title}"></h3>
+        <hr class="my-2"/>
+    </div>
+    <div class="container-md bg-secondary">
+        <div class="my-5 pt-1" name="divform">
+            <div class="mb-3 mt-3">
+                <h5 class="text-white">Datos del Libro</h5>
+                <hr class="text-white"/>
+            </div>
+            <form class="row g-3 needs-validation" action="" method="POST" autocomplete="off" th:action="@{/books/__${action}__}" th:object="${book}">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" id="id_book" th:field="*{id_book}">
+                </div>
+                <div class="mb-3">
+                    <label for="isbn" class="form-label text-white">[[#{book.isbn}]]</label>
+                    <input type="number" class="form-control" id="isbn" th:field="*{isbn}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label text-white">[[#{book.title}]]</label>
+                    <input type="text" class="form-control" id="title" th:field="*{title}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="year" class="form-label text-white">[[#{book.year}]]</label>
+                    <input type="number" class="form-control" id="year" th:field="*{year}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="copies" class="form-label text-white">[[#{book.copies}]]</label>
+                    <input type="number" class="form-control" id="copies" th:field="*{copies}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="loanedCopies" class="form-label text-white">[[#{book.loanedcopies}]]</label>
+                    <input type="number" class="form-control" id="loanedCopies" th:disabled="${action == 'save'}" th:field="*{loanedCopies}" th:required="${action == 'save'}">
+                </div>
+                <div class="mb-3">
+                    <label for="remainingCopies" class="form-label text-white">[[#{book.remainingcopies}]]</label>
+                    <input type="number" class="form-control" id="remainingCopies" th:disabled="${action == 'save'}" th:field="*{remainingCopies}" th:required="${action == 'save'}">
+                </div>
+                <div class="mb-3">
+                    <label for="author" class="form-label text-white">[[#{book.author}]]</label>
+                    <select id="author" class="form-select" th:field="*{author}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option th:each="author : ${authors}" th:text="${author.name}" th:value="${author.id_author}">[[${author.name}]]</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="editorial" class="form-label text-white">[[#{book.editorial}]]</label>
+                    <select id="editorial" class="form-select" th:field="*{editorial}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option th:each="editorial : ${editorials}" th:text="${editorial.name}" th:value="${editorial.id_editorial}">[[${editorial.name}]]</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="activate" class="form-label text-white">[[#{book.activate}]]</label>
+                    <select id="activate" class="form-select" th:field="*{activate}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option value="true">Habilitado</option>
+                        <option value="false">Deshabilitado</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Libro' : 'Guardar Cambios'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div th:replace="layout/template :: btnarriba"></div>
+
+<footer th:replace="layout/template :: footer"></footer>
+
+</body>
+</html>

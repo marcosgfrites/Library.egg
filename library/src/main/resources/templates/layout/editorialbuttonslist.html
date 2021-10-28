@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Listado de Botones</title>
+</head>
+<body>
+<section th:fragment="editorialbuttonslist" class="py-4 mb-4">
+    <div class="container">
+        <div class="row">
+            <h3>
+                <i class="far fa-newspaper"></i> [[#{entity.editorial}]]
+            </h3>
+            <hr/>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <a th:href="@{/editorials/create}" id="btnCreateEditorial" class="btn btn-success btn-block">
+                    <i class="fas fa-plus"></i> [[#{action.add}]]
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

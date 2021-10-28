@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="Marcos G. Frites" name="author"/>
+  <title>LibraryGyL - Sistema de Gestión</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+  <!-- Incorporación de MyScripts a todas las páginas -->
+  <script th:src="@{/js/btnScrollUp.js}"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+  <header th:fragment="header">
+    <div class="px-3 py-2 bg-dark text-white">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">
+            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Linkedin">
+              <h1>
+                <i class="fab fa-linkedin"></i>
+              </h1>
+            </svg>
+          </a>
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+            <li>
+              <a class="nav-link text-secondary" th:href="@{/}"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a class="nav-link text-white" th:href="@{/authors}"><i class="fas fa-feather-alt"></i> Autores</a>
+            </li>
+            <li>
+              <a class="nav-link text-white" th:href="@{/editorials}"><i class="far fa-newspaper"></i> Editoriales</a>
+            </li>
+            <li>
+              <a class="nav-link text-white" th:href="@{/books}"><i class="fas fa-book"></i> Libros</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 py-2 border-bottom mb-3">
+      <div class="container d-flex flex-wrap justify-content-center"></div>
+    </div>
+  </header>
+</div>
+
+<div class="container" th:fragment="btnarriba">
+  <div class="d-flex justify-content-end pt-5 pb-5">
+    <button class="btn btn-block btn-warning" id="btnTop" name="btnTop"><i class="fas fa-arrow-circle-up"></i></button>
+  </div>
+</div>
+
+
+<div class="container">
+  <footer class="py-3 my-4" th:fragment="footer">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item">
+        <a class="nav-link px-2 text-muted" th:href="@{/}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2 text-muted" th:href="@{/authors}">Autores</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2 text-muted" th:href="@{/editorials}">Editoriales</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2 text-muted" th:href="@{/books}">Libros</a>
+      </li>
+    </ul>
+    <p class="text-center text-muted" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">ASC Marcos Frites</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
