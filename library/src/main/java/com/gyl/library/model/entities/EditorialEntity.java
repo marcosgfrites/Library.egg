@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "editorial", schema = "librarygyl")
+@Table(name = "editorial", schema = "libreriaweb")
 public class EditorialEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

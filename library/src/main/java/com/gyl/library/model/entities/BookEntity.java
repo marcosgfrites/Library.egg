@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "book", schema = "librarygyl")
+@Table(name = "book", schema = "libreriaweb")
 public class BookEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
