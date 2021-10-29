@@ -21,7 +21,7 @@
                 <h5 class="text-white">Datos de la Editorial</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/editorials/__${action}__}" th:object="${editorial}">
+            <form class="row g-3 needs-validation" action="" id="form" method="POST" autocomplete="off" th:action="@{/editorials/__${action}__}" th:object="${editorial}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_editorial" th:field="*{id_editorial}">
                 </div>

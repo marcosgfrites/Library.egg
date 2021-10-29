@@ -21,7 +21,7 @@
                 <h5 class="text-white">Datos del Autor</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/authors/__${action}__}" th:object="${author}">
+            <form class="row g-3 needs-validation" action="" id="form" method="POST" autocomplete="off" th:action="@{/authors/__${action}__}" th:object="${author}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_author" th:field="*{id_author}">
                 </div>
