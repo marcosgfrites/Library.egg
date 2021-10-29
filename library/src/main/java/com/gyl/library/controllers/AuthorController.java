@@ -58,8 +58,12 @@ public class AuthorController {
     @PostMapping("/save")
     public RedirectView saveAuthor(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
-            authorServiceImpl.createAuthor(name, activate);
-            redirectAttributes.addFlashAttribute("success", "El autor ha sido creado exitosamente!");
+            if (!authorServiceImpl.authorExist(name)) {
+                authorServiceImpl.createAuthor(name, activate);
+                redirectAttributes.addFlashAttribute("success", "El autor ha sido creado exitosamente!");
+            } else {
+                redirectAttributes.addFlashAttribute("warning", "Ya existe un autor registrado con el mismo nombre.");
+            }
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }

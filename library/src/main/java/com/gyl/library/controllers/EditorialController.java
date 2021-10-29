@@ -57,8 +57,12 @@ public class EditorialController {
     @PostMapping("/save")
     public RedirectView saveEditorial(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
-            editorialServiceImpl.createEditorial(name, activate);
-            redirectAttributes.addFlashAttribute("success", "La editorial ha sido creada exitosamente!");
+            if (!editorialServiceImpl.editorialExist(name)) {
+                editorialServiceImpl.createEditorial(name, activate);
+                redirectAttributes.addFlashAttribute("success", "La editorial ha sido creada exitosamente!");
+            } else {
+                redirectAttributes.addFlashAttribute("warning", "Ya existe una editorial registrada con el mismo nombre.");
+            }
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }

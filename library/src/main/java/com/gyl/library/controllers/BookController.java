@@ -82,10 +82,14 @@ public class BookController {
     @PostMapping("/save")
     public RedirectView saveBook(@RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
-            Integer remainingCopies = copies; // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
-            Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
-            bookServiceImpl.createBook(isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
-            redirectAttributes.addFlashAttribute("success", "El libro ha sido creado exitosamente!");
+            if (!bookServiceImpl.bookExist(isbn)) {
+                Integer remainingCopies = copies; // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
+                Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
+                bookServiceImpl.createBook(isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+                redirectAttributes.addFlashAttribute("success", "El libro ha sido creado exitosamente!");
+            } else {
+                redirectAttributes.addFlashAttribute("warning", "Ya existe un libro registrado con el mismo ISBN.");
+            }
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
