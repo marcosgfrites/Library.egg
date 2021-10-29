@@ -5,7 +5,12 @@ import com.gyl.library.services.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/authors")
@@ -30,8 +35,13 @@ public class AuthorController {
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated() {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("authors");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+        }
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         return modelAndView;
     }
@@ -46,8 +56,13 @@ public class AuthorController {
     }
 
     @PostMapping("/save")
-    public RedirectView saveAuthor(@RequestParam String name, @RequestParam Boolean activate) {
-        authorServiceImpl.createAuthor(name, activate);
+    public RedirectView saveAuthor(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+        try {
+            authorServiceImpl.createAuthor(name, activate);
+            redirectAttributes.addFlashAttribute("success", "El autor ha sido creado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/authors");
     }
 
@@ -61,22 +76,43 @@ public class AuthorController {
     }
 
     @PostMapping("/modify")
-    public RedirectView modifyAuthor(@RequestParam Integer id_author, @RequestParam String name, @RequestParam Boolean activate) {
-        authorServiceImpl.updateAuthor(id_author, name, activate);
+    public RedirectView modifyAuthor(@RequestParam Integer id_author, @RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+        try {
+            authorServiceImpl.updateAuthor(id_author, name, activate);
+            redirectAttributes.addFlashAttribute("success", "El autor ha sido modificado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/authors");
     }
 
     @PostMapping("/delete/{id_author}")
-    public RedirectView deleteAuthor(@PathVariable Integer id_author) {
-        authorServiceImpl.deleteAuthor(id_author);
+    public RedirectView deleteAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
+        try {
+            authorServiceImpl.deleteAuthor(id_author);
+            redirectAttributes.addFlashAttribute("success", "El autor ha sido eliminado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/authors");
     }
 
     @PostMapping("/activate/{id_author}")
-    public RedirectView activateAuthor(@PathVariable Integer id_author) {
-        AuthorEntity authorEntity = authorServiceImpl.findAuthorById(id_author);
-        authorEntity.setActivate(!authorEntity.getActivate());
-        authorServiceImpl.updateAuthor(authorEntity.getId_author(), authorEntity.getName(), authorEntity.getActivate());
+    public RedirectView activateAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
+        try {
+            String aux = "";
+            AuthorEntity authorEntity = authorServiceImpl.findAuthorById(id_author);
+            authorEntity.setActivate(!authorEntity.getActivate());
+            if (authorEntity.getActivate()) {
+                aux = "habilitado";
+            } else {
+                aux = "deshabilitado";
+            }
+            authorServiceImpl.updateAuthor(authorEntity.getId_author(), authorEntity.getName(), authorEntity.getActivate());
+            redirectAttributes.addFlashAttribute("success", "El autor ha sido " + aux + " exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/authors");
     }
 

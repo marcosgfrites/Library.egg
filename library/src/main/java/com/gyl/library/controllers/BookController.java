@@ -7,7 +7,12 @@ import com.gyl.library.services.EditorialServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -51,8 +56,13 @@ public class BookController {
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated() {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("books");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+        }
         modelAndView.addObject("books", bookServiceImpl.getAllBooksActivated());
         return modelAndView;
     }
@@ -70,10 +80,15 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public RedirectView saveBook(@RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate) {
-        Integer remainingCopies = copies; // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
-        Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
-        bookServiceImpl.createBook(isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+    public RedirectView saveBook(@RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+        try {
+            Integer remainingCopies = copies; // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
+            Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
+            bookServiceImpl.createBook(isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+            redirectAttributes.addFlashAttribute("success", "El libro ha sido creado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/books");
     }
 
@@ -89,22 +104,44 @@ public class BookController {
     }
 
     @PostMapping("/modify")
-    public RedirectView modifyBook(@RequestParam Integer id_book, @RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam Integer loanedCopies, @RequestParam Integer remainingCopies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate) {
-        bookServiceImpl.updateBook(id_book, isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+    public RedirectView modifyBook(@RequestParam Integer id_book, @RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam Integer loanedCopies, @RequestParam Integer remainingCopies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+        try {
+            bookServiceImpl.updateBook(id_book, isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+            redirectAttributes.addFlashAttribute("success", "El libro ha sido modificado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/books");
     }
 
     @PostMapping("/delete/{id_book}")
-    public RedirectView deleteBook(@PathVariable Integer id_book) {
-        bookServiceImpl.deleteBook(id_book);
+    public RedirectView deleteBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
+        try {
+            bookServiceImpl.deleteBook(id_book);
+            redirectAttributes.addFlashAttribute("success", "El libro ha sido eliminado exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/books");
     }
 
     @PostMapping("/activate/{id_book}")
-    public RedirectView activateBook(@PathVariable Integer id_book) {
-        BookEntity bookEntity = bookServiceImpl.findBookById(id_book);
-        bookEntity.setActivate(!bookEntity.getActivate());
-        bookServiceImpl.updateBook(bookEntity.getId_book(), bookEntity.getIsbn(), bookEntity.getTitle(), bookEntity.getYear(), bookEntity.getCopies(), bookEntity.getLoanedCopies(), bookEntity.getRemainingCopies(), bookEntity.getAuthor(), bookEntity.getEditorial(), bookEntity.getActivate());
+    public RedirectView activateBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
+        try {
+            String aux = "";
+            BookEntity bookEntity = bookServiceImpl.findBookById(id_book);
+            bookEntity.setActivate(!bookEntity.getActivate());
+            if (bookEntity.getActivate()) {
+                aux = "habilitado";
+            } else {
+                aux = "deshabilitado";
+            }
+            bookServiceImpl.updateBook(bookEntity.getId_book(), bookEntity.getIsbn(), bookEntity.getTitle(), bookEntity.getYear(), bookEntity.getCopies(), bookEntity.getLoanedCopies(), bookEntity.getRemainingCopies(), bookEntity.getAuthor(), bookEntity.getEditorial(), bookEntity.getActivate());
+            redirectAttributes.addFlashAttribute("success", "El libro ha sido " + aux + " exitosamente!");
+        } catch (Exception exception) {
+            redirectAttributes.addFlashAttribute("error", exception.getMessage());
+        }
         return new RedirectView("/books");
     }
+
 }

@@ -1,11 +1,18 @@
 package com.gyl.library.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 @Table(name = "editorial", schema = "libreriaweb")
 public class EditorialEntity implements Serializable {
 
@@ -25,47 +32,5 @@ public class EditorialEntity implements Serializable {
 
     @OneToMany(mappedBy = "editorial")
     private List<BookEntity> books;
-
-    public EditorialEntity() {
-    }
-
-    public EditorialEntity(Integer id_editorial, String name, Boolean activate, List<BookEntity> books) {
-        this.id_editorial = id_editorial;
-        this.name = name;
-        this.activate = activate;
-        this.books = books;
-    }
-
-    public Integer getId_editorial() {
-        return id_editorial;
-    }
-
-    public void setId_editorial(Integer id_editorial) {
-        this.id_editorial = id_editorial;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getActivate() {
-        return activate;
-    }
-
-    public void setActivate(Boolean activate) {
-        this.activate = activate;
-    }
-
-    public List<BookEntity> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookEntity> books) {
-        this.books = books;
-    }
 
 }
