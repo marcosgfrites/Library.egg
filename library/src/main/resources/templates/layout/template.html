@@ -12,11 +12,8 @@
   <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
   <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
-  <!-- JS necesarios -->
-  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
   <!-- Incorporación de MyScripts a todas las páginas -->
   <script th:src="@{/js/btnScrollUp.js}"></script>
-  <script th:src="@{/js/formValidation.js}"></script>
   <script th:src="@{/js/alertClose.js}"></script>
 </head>
 
@@ -112,8 +109,13 @@
         <a class="nav-link px-2 text-muted" th:href="@{/books}">Libros</a>
       </li>
     </ul>
-    <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">ASC Marcos Frites</a></p>
+    <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://github.com/marcosgfrites}" target="_blank">ASC Marcos Frites</a></p>
   </footer>
+</div>
+
+<div class="container" th:fragment="myscripts2">
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/formValidation.js}"></script>
 </div>
 
 </body>

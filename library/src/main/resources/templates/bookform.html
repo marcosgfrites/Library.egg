@@ -21,7 +21,7 @@
                 <h5 class="text-white">Datos del Libro</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" action="" id="form" method="POST" autocomplete="off" th:action="@{/books/__${action}__}" th:object="${book}">
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/books/__${action}__}" th:object="${book}">
                 <div class="mb-3">
                     <input type="hidden" class="form-control" id="id_book" th:field="*{id_book}">
                 </div>
@@ -91,6 +91,8 @@
 <div th:replace="layout/template :: btnarriba"></div>
 
 <footer th:replace="layout/template :: footer"></footer>
+
+<div th:replace="layout/template :: myscripts2"></div>
 
 </body>
 </html>
