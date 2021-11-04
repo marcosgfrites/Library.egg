@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,49 +16,23 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "book", schema = "libreriaweb")
+@Table(name = "user", schema = "libreriaweb")
 @EntityListeners(AuditingEntityListener.class)
-public class BookEntity implements Serializable {
+public class UserEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serializableVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_book;
+    private Integer id_user;
 
-    @NotNull
-    @Column(nullable = false)
-    private Long isbn;
+    @NotEmpty
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @NotEmpty
     @Column(nullable = false)
-    private String title;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer year;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer copies;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer loanedCopies;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer remainingCopies;
-
-    @NotEmpty
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private AuthorEntity author;
-
-    @NotEmpty
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private EditorialEntity editorial;
+    private String password;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

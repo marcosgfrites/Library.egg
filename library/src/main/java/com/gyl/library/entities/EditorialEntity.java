@@ -3,10 +3,14 @@ package com.gyl.library.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,6 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Table(name = "editorial", schema = "libreriaweb")
+@EntityListeners(AuditingEntityListener.class)
 public class EditorialEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,6 +30,13 @@ public class EditorialEntity implements Serializable {
     @NotEmpty
     @Column(nullable = false)
     private String name;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    private LocalDateTime updateDate;
 
     @NotEmpty
     @Column(nullable = false, columnDefinition = "TINYINT(1)")

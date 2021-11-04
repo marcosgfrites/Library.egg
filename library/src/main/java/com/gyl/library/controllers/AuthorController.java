@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/authors")
-
 public class AuthorController {
 
     @Autowired

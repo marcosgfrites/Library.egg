@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Creación de Usuarios</title>
+</head>
+<body>
+<header th:replace="layout/template :: header"></header>
+
+<div th:replace="layout/template :: alert"></div>
+
+<section name="userform">
+    <div class="container my-2">
+        <h3 th:text="${title}"></h3>
+        <hr class="my-2"/>
+    </div>
+    <div class="container-md bg-secondary">
+        <div class="my-5 pt-1" name="divform">
+            <div class="mb-3 mt-3">
+                <h5 class="text-white">Datos del Usuario</h5>
+                <hr class="text-white"/>
+            </div>
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/users/__${action}__}" th:object="${user}">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" id="id_user" th:field="*{id_user}">
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label text-white">Usuario</label>
+                    <input type="text" class="form-control" id="username" th:placeholder="'Ingrese un nombre de usuario'" th:field="*{username}" required>
+                    <div class="invalid-feedback"> El username es un campo obligatorio </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label text-white">Contraseña</label>
+                    <input type="password" class="form-control" id="password" th:placeholder="'Ingrese una contraseña'" th:field="*{password}" required>
+                    <div class="invalid-feedback"> El password es un campo obligatorio </div>
+                </div>
+                <div class="mb-3">
+                    <label for="repassword" class="form-label text-white">Confirmación de Contraseña</label>
+                    <input type="password" class="form-control" id="repassword" th:placeholder="'Ingrese nuevamente su contraseña'" required>
+                    <div class="invalid-feedback"> El confirmación de password es un campo obligatorio </div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Usuario' : 'Guardar Cambios'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div th:replace="layout/template :: btnarriba"></div>
+
+<footer th:replace="layout/template :: footer"></footer>
+
+<div th:replace="layout/template :: myscripts2"></div>
+
+</body>
+</html>
