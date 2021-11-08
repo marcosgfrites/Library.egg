@@ -24,6 +24,19 @@
     <div class="px-3 py-2 bg-dark text-white">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small" sec:authorize="isAuthenticated()">
+            <li>
+              <a class="nav-link text-white">
+                <span>Bienvenido: </span>
+                <span sec:authentication="name">User</span>
+              </a>
+            </li>
+            <li>
+              <form th:action="@{/logout}">
+                <a class="nav-link text-white" href="#" onclick="this.parentNode.submit();"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+              </form>
+            </li>
+          </ul>
           <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">
             <svg class="bi me-2" width="40" height="32" role="img" aria-label="Linkedin">
               <h1>

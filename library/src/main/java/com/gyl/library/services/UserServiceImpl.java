@@ -36,22 +36,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserEntity findByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username);
-            return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
-        } catch (Exception e) {
-            throw new UsernameNotFoundException(String.format(message, username));
-        }
+        UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(message, username)));
+        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
     }
 
     public boolean userExist(String username) {
-        if (this.findByUsername(username) != null) {
+        if (userRepository.findByUsernameIgnoreCase(username).orElse(null) != null) {
             return true;
         }
         return false;
