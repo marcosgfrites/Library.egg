@@ -44,12 +44,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity security) throws Exception {
-        security.authorizeRequests()
-                .antMatchers("/img/*", "/js/*", "/login", "/users/create", "/users/save").permitAll()
+        security
+                .authorizeRequests()
+                .antMatchers("/img/*", "/js/*", "/users/create", "/users/save").permitAll()
                 .antMatchers("/**").authenticated() //.permitAll() o .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll();
+                .loginPage("/login")
+                .loginProcessingUrl("/logincheck")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .permitAll()
+                .deleteCookies("JSESSIONID")
+                .and()
+                .csrf()
+                .disable();
     }
 
 }

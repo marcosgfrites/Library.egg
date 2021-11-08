@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -20,21 +21,23 @@ public class AuthorController {
     private AuthorServiceImpl authorServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll() {
+    public ModelAndView viewAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authors");
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsOrderByName());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated() {
+    public ModelAndView viewAllNoActivated(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authors");
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsNoActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authors");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
@@ -42,15 +45,17 @@ public class AuthorController {
             modelAndView.addObject("error", flashMap.get("error"));
         }
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/create")
-    public ModelAndView createAuthor() {
+    public ModelAndView createAuthor(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authorform");
         modelAndView.addObject("author", new AuthorEntity());
         modelAndView.addObject("title", "Creación de Autor");
         modelAndView.addObject("action", "save");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
@@ -70,11 +75,12 @@ public class AuthorController {
     }
 
     @GetMapping("/edit/{id_author}")
-    public ModelAndView editAuthor(@PathVariable Integer id_author) {
+    public ModelAndView editAuthor(@PathVariable Integer id_author, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authorform");
         modelAndView.addObject("author", authorServiceImpl.findAuthorById(id_author));
         modelAndView.addObject("title", "Edicion de Autor");
         modelAndView.addObject("action", "modify");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 

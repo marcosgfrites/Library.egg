@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -20,21 +21,23 @@ public class EditorialController {
     private EditorialServiceImpl editorialServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll() {
+    public ModelAndView viewAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorials");
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsOrderByName());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated() {
+    public ModelAndView viewAllNoActivated(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorials");
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsNoActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorials");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
@@ -42,15 +45,17 @@ public class EditorialController {
             modelAndView.addObject("error", flashMap.get("error"));
         }
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/create")
-    public ModelAndView createEditorial() {
+    public ModelAndView createEditorial(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", new EditorialEntity());
         modelAndView.addObject("title", "Creación de Editorial");
         modelAndView.addObject("action", "save");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
@@ -70,11 +75,12 @@ public class EditorialController {
     }
 
     @GetMapping("/edit/{id_editorial}")
-    public ModelAndView editEditorial(@PathVariable Integer id_editorial) {
+    public ModelAndView editEditorial(@PathVariable Integer id_editorial, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", editorialServiceImpl.findEditorialById(id_editorial));
         modelAndView.addObject("title", "Edicion de Editorial");
         modelAndView.addObject("action", "modify");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 

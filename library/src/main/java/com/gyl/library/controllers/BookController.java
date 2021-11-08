@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -28,35 +29,39 @@ public class BookController {
     private BookServiceImpl bookServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll() {
+    public ModelAndView viewAll(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksOrderByTitle());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/allbyauthor/{id_author}")
-    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author) {
+    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByAuthor(authorServiceImpl.findAuthorById(id_author)));
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/allbyeditorial/{id_editorial}")
-    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial) {
+    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByEditorial(editorialServiceImpl.findEditorialById(id_editorial)));
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated() {
+    public ModelAndView viewAllNoActivated(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksNoActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("books");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
@@ -64,18 +69,20 @@ public class BookController {
             modelAndView.addObject("error", flashMap.get("error"));
         }
         modelAndView.addObject("books", bookServiceImpl.getAllBooksActivated());
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
 
     @GetMapping("/create")
-    public ModelAndView createBook() {
+    public ModelAndView createBook(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", new BookEntity());
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
         modelAndView.addObject("title", "Creación de Libro");
         modelAndView.addObject("action", "save");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
@@ -97,13 +104,14 @@ public class BookController {
     }
 
     @GetMapping("/edit/{id_book}")
-    public ModelAndView editBook(@PathVariable Integer id_book) {
+    public ModelAndView editBook(@PathVariable Integer id_book, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", bookServiceImpl.findBookById(id_book));
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
         modelAndView.addObject("title", "Edicion de Libro");
         modelAndView.addObject("action", "modify");
+        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 

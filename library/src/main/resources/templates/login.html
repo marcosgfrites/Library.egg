@@ -49,6 +49,12 @@
         </symbol>
     </svg>
 
+    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" th:if="${logout != null}" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        <span th:text="${logout}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" th:if="${success != null}" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
         <span th:text="${success}"></span>
@@ -80,11 +86,13 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
-                                <form class="row g-3 needs-validation" novalidate autocomplete="off" th:action="@{/login}" method="POST">
+                                <form class="row g-3 needs-validation" novalidate autocomplete="off" th:action="@{/logincheck}" method="POST">
                                     <label for="username">Usuario</label>
-                                    <input class="form-control" type="text" placeholder="Nombre de usuario" id="username" name="username">
+                                    <input class="form-control" type="text" placeholder="Nombre de usuario" id="username" name="username" required/>
+                                    <div class="invalid-feedback"> El username es un campo obligatorio </div>
                                     <label for="password">Contraseña</label>
-                                    <input  class="form-control" type="password" placeholder="Password" id="password" name="password">
+                                    <input  class="form-control" type="password" placeholder="Password" id="password" name="password" required/>
+                                    <div class="invalid-feedback"> El password es un campo obligatorio </div>
                                     <input type="submit" value="Login" class="btn btn-primary form-control"/>
                                 </form>
                             </div>

@@ -5,54 +5,103 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
     <meta content="Marcos G. Frites" name="author"/>
-    <title>LibraryGyL - Creación de Usuarios</title>
+    <title>LibraryGyL - Registro</title>
 </head>
 <body>
-<header th:replace="layout/template :: header"></header>
 
-<div th:replace="layout/template :: alert"></div>
+<header name="header">
+    <div class="px-3 py-2 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">
+                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Linkedin">
+                        <h1>
+                            <i class="fab fa-linkedin"></i>
+                        </h1>
+                    </svg>
+                </a>
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                    <li>
+                        <a class="nav-link text-white" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user-plus"></i> Registrarse</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="px-3 py-2 border-bottom mb-3">
+        <div class="container d-flex flex-wrap justify-content-center"></div>
+    </div>
+</header>
+
+<div class="container" name="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+    </svg>
+
+    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" th:if="${success != null}" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="alert alert-warning d-flex align-items-center alert-dismissible fade show" th:if="${warning != null}" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+        <span th:text="${warning}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" th:if="${error != null}" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
 
 <section name="userform">
-    <div class="container my-2">
-        <h3 th:text="${title}"></h3>
-        <hr class="my-2"/>
-    </div>
     <div class="container-md bg-secondary">
         <div class="my-5 pt-1" name="divform">
             <div class="mb-3 mt-3">
-                <h5 class="text-white">Datos del Usuario</h5>
+                <h5 class="text-white">Registro</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/users/__${action}__}" th:object="${user}">
-                <div class="mb-3">
-                    <input type="hidden" class="form-control" id="id_user" th:field="*{id_user}">
-                </div>
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/users/save}">
                 <div class="mb-3">
                     <label for="username" class="form-label text-white">Usuario</label>
-                    <input type="text" class="form-control" id="username" th:placeholder="'Ingrese un nombre de usuario'" th:field="*{username}" required>
+                    <input type="text" class="form-control" id="username" th:placeholder="'Ingrese un nombre de usuario'" name="username" th:value="${username}" required/>
                     <div class="invalid-feedback"> El username es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label text-white">Contraseña</label>
-                    <input type="password" class="form-control" id="password" th:placeholder="'Ingrese una contraseña'" th:field="*{password}" required>
+                    <input type="password" class="form-control" id="password" th:placeholder="'Ingrese una contraseña'" name="password" th:value="${password}" required/>
                     <div class="invalid-feedback"> El password es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
                     <label for="repassword" class="form-label text-white">Confirmación de Contraseña</label>
-                    <input type="password" class="form-control" id="repassword" th:placeholder="'Ingrese nuevamente su contraseña'" required>
+                    <input type="password" class="form-control" id="repassword" th:placeholder="'Ingrese nuevamente su contraseña'" name="repassword" th:value="${repassword}" required/>
                     <div class="invalid-feedback"> El confirmación de password es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Usuario' : 'Guardar Cambios'"></button>
+                    <button class="btn btn-success" type="submit">Registrarse</button>
                 </div>
             </form>
         </div>
     </div>
 </section>
 
-<div th:replace="layout/template :: btnarriba"></div>
-
-<footer th:replace="layout/template :: footer"></footer>
+<footer class="py-3 my-4" name="footer">
+    <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://github.com/marcosgfrites}" target="_blank">ASC Marcos Frites</a></p>
+</footer>
 
 <div th:replace="layout/template :: myscripts2"></div>
 
