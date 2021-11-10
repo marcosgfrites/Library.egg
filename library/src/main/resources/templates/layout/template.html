@@ -24,7 +24,7 @@
     <div class="px-3 py-2 bg-dark text-white">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small" sec:authorize="isAuthenticated()">
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
               <a class="nav-link text-white">
                 <span>Bienvenido: </span>
@@ -60,6 +60,12 @@
             </li>
             <li>
               <a class="nav-link text-white" th:href="@{/books}"><i class="fas fa-book"></i> Libros</a>
+            </li>
+            <li>
+              <a class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user"></i> Usuarios</a>
+            </li>
+            <li>
+              <a class="nav-link text-white" th:href="@{/roles/create}"><i class="fas fa-user-tag"></i> Roles</a>
             </li>
           </ul>
         </div>

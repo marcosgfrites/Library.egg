@@ -1,8 +1,11 @@
 package com.gyl.library.services;
 
+import com.gyl.library.entities.RolEntity;
 import com.gyl.library.entities.UserEntity;
 import com.gyl.library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,21 +13,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    BCryptPasswordEncoder passwordEncoder;
 
     private final String message = "El usuario ingresado no existe. %s";
 
@@ -36,6 +36,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(password));
         user.setActivate(true);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserEntity findByUsernameIgnoreCase(String username) {
+        return userRepository.findByUsernameIgnoreCase(username.toUpperCase()).get();
     }
 
     @Override
@@ -52,7 +58,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 */
         /* FIN DE RECUPERO DE USUARIO LOGUEADO */
 
-        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
+        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        for (RolEntity rol : userEntity.getRoles()) {
+            roles.add(new SimpleGrantedAuthority("ROLE_" + rol.getNamerol()));
+        }
+
+        return new User(userEntity.getUsername(), userEntity.getPassword(), roles);
     }
 
     public boolean userExist(String username) {
@@ -72,4 +83,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.createUser(username, password);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserEntity> getAllUsersActivated() {
+        return userRepository.findByActivateTrueOrderByUsernameAsc();
+    }
 }

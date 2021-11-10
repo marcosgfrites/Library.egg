@@ -68,31 +68,34 @@
     </div>
 </div>
 
-<section name="userform">
+<section name="rolform">
     <div class="container-md bg-secondary">
         <div class="my-5 pt-1" name="divform">
             <div class="mb-3 mt-3">
-                <h5 class="text-white">Registro</h5>
+                <h5 class="text-white">Asignación de Rol</h5>
                 <hr class="text-white"/>
             </div>
-            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/users/__${action}__}">
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/roles/save}" th:object="${rol}">
                 <div class="mb-3">
-                    <label for="username" class="form-label text-white">Usuario</label>
-                    <input type="text" class="form-control" id="username" th:placeholder="'Ingrese un nombre de usuario'" th:name="username" th:value="${username}" required/>
-                    <div class="invalid-feedback"> El username es un campo obligatorio </div>
+                    <label for="namerol" class="form-label text-white">Rol</label>
+                    <select id="namerol" class="form-select" name="namerol" th:field="*{namerol}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option value="SUPER">Super</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="USER">User</option>
+                    </select>
+                    <div class="invalid-feedback"> El nombre de rol es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label text-white">Contraseña</label>
-                    <input type="password" class="form-control" id="password" th:placeholder="'Ingrese una contraseña'" th:name="password" th:value="${password}" required/>
-                    <div class="invalid-feedback"> El password es un campo obligatorio </div>
+                    <label for="user" class="form-label text-white">Usuario</label>
+                    <select id="user" class="form-select" name="user" th:field="*{user}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option th:each="user : ${users}" th:text="${user.username}" th:value="${user.id_user}">User.username</option>
+                    </select>
+                    <div class="invalid-feedback"> El usuario es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
-                    <label for="repassword" class="form-label text-white">Confirmación de Contraseña</label>
-                    <input type="password" class="form-control" id="repassword" th:placeholder="'Ingrese nuevamente su contraseña'" th:name="repassword" th:value="${repassword}" required/>
-                    <div class="invalid-feedback"> El confirmación de password es un campo obligatorio </div>
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-success" type="submit">Registrarse</button>
+                    <button class="btn btn-success" type="submit">Asignar Rol</button>
                 </div>
             </form>
         </div>

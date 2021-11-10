@@ -5,6 +5,7 @@ import com.gyl.library.services.AuthorServiceImpl;
 import com.gyl.library.services.BookServiceImpl;
 import com.gyl.library.services.EditorialServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -75,6 +76,7 @@ public class BookController {
 
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createBook(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", new BookEntity());
@@ -87,6 +89,7 @@ public class BookController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView saveBook(@RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             if (!bookServiceImpl.bookExist(isbn)) {
@@ -104,6 +107,7 @@ public class BookController {
     }
 
     @GetMapping("/edit/{id_book}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editBook(@PathVariable Integer id_book, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", bookServiceImpl.findBookById(id_book));
@@ -116,6 +120,7 @@ public class BookController {
     }
 
     @PostMapping("/modify")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modifyBook(@RequestParam Integer id_book, @RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam Integer loanedCopies, @RequestParam Integer remainingCopies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             bookServiceImpl.updateBook(id_book, isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
@@ -127,6 +132,7 @@ public class BookController {
     }
 
     @PostMapping("/delete/{id_book}")
+    @PreAuthorize("hasRole('SUPER')")
     public RedirectView deleteBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
         try {
             bookServiceImpl.deleteBook(id_book);
@@ -138,6 +144,7 @@ public class BookController {
     }
 
     @PostMapping("/activate/{id_book}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView activateBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
         try {
             String aux = "";

@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class MyPasswordEncrypter {
 
     public static void main(String[] args) {
-        var password = "ContraseñaAEncriptar";
+        var password = "super";
         System.out.println("Password: " + password);
         System.out.println("Encriptado: " + encriptarPassword(password));
     }

@@ -3,6 +3,7 @@ package com.gyl.library.controllers;
 import com.gyl.library.entities.EditorialEntity;
 import com.gyl.library.services.EditorialServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -50,6 +51,7 @@ public class EditorialController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createEditorial(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", new EditorialEntity());
@@ -60,6 +62,7 @@ public class EditorialController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView saveEditorial(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             if (!editorialServiceImpl.editorialExist(name)) {
@@ -75,6 +78,7 @@ public class EditorialController {
     }
 
     @GetMapping("/edit/{id_editorial}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editEditorial(@PathVariable Integer id_editorial, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", editorialServiceImpl.findEditorialById(id_editorial));
@@ -85,6 +89,7 @@ public class EditorialController {
     }
 
     @PostMapping("/modify")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modifyEditorial(@RequestParam Integer id_editorial, @RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             editorialServiceImpl.updateEditorial(id_editorial, name, activate);
@@ -96,6 +101,7 @@ public class EditorialController {
     }
 
     @PostMapping("/delete/{id_editorial}")
+    @PreAuthorize("hasRole('SUPER')")
     public RedirectView deleteEditorial(@PathVariable Integer id_editorial, RedirectAttributes redirectAttributes) {
         try {
             editorialServiceImpl.deleteEditorial(id_editorial);
@@ -107,6 +113,7 @@ public class EditorialController {
     }
 
     @PostMapping("/activate/{id_editorial}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView activateEditorial(@PathVariable Integer id_editorial, RedirectAttributes redirectAttributes) {
         try {
             String aux = "";

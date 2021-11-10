@@ -3,6 +3,7 @@ package com.gyl.library.controllers;
 import com.gyl.library.entities.AuthorEntity;
 import com.gyl.library.services.AuthorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -50,6 +51,7 @@ public class AuthorController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createAuthor(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authorform");
         modelAndView.addObject("author", new AuthorEntity());
@@ -60,6 +62,7 @@ public class AuthorController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView saveAuthor(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             if (!authorServiceImpl.authorExist(name)) {
@@ -75,6 +78,7 @@ public class AuthorController {
     }
 
     @GetMapping("/edit/{id_author}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView editAuthor(@PathVariable Integer id_author, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("authorform");
         modelAndView.addObject("author", authorServiceImpl.findAuthorById(id_author));
@@ -85,6 +89,7 @@ public class AuthorController {
     }
 
     @PostMapping("/modify")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView modifyAuthor(@RequestParam Integer id_author, @RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
         try {
             authorServiceImpl.updateAuthor(id_author, name, activate);
@@ -96,6 +101,7 @@ public class AuthorController {
     }
 
     @PostMapping("/delete/{id_author}")
+    @PreAuthorize("hasRole('SUPER')")
     public RedirectView deleteAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
         try {
             authorServiceImpl.deleteAuthor(id_author);
@@ -107,6 +113,7 @@ public class AuthorController {
     }
 
     @PostMapping("/activate/{id_author}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RedirectView activateAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
         try {
             String aux = "";
