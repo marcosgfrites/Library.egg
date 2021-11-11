@@ -11,7 +11,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -22,36 +21,86 @@ public class AuthorController {
     private AuthorServiceImpl authorServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll() {
+    public ModelAndView viewAll(HttpServletRequest request, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("authors");
-        modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsOrderByName());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("authors", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("authors", null);
+        } else {
+            try {
+                modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsOrderByName());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/authors");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated() {
+    public ModelAndView viewAllNoActivated(HttpServletRequest request, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("authors");
-        modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsNoActivated());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("authors", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("authors", null);
+        } else {
+            try {
+                modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsNoActivated());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/authors");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("authors");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
             modelAndView.addObject("success", flashMap.get("success"));
             modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("authors", null);
         }
-        modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("authors", null);
+        } else {
+            try {
+                modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/authors");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView createAuthor() {
+    public ModelAndView createAuthor(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("authorform");
-        modelAndView.addObject("author", new AuthorEntity());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("author", flashMap.get("author"));
+        } else {
+            modelAndView.addObject("author", new AuthorEntity());
+        }
         modelAndView.addObject("title", "Creación de Autor");
         modelAndView.addObject("action", "save");
         return modelAndView;
@@ -59,25 +108,32 @@ public class AuthorController {
 
     @PostMapping("/save")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView saveAuthor(@RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+    public RedirectView saveAuthor(@ModelAttribute AuthorEntity author, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/authors");
         try {
-            if (!authorServiceImpl.authorExist(name)) {
-                authorServiceImpl.createAuthor(name, activate);
-                redirectAttributes.addFlashAttribute("success", "El autor ha sido creado exitosamente!");
-            } else {
-                redirectAttributes.addFlashAttribute("warning", "Ya existe un autor registrado con el mismo nombre.");
-            }
+            authorServiceImpl.validateFormAndCreate(author.getName());
+            redirectAttributes.addFlashAttribute("success", "El autor ha sido creado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
+            redirectAttributes.addFlashAttribute("author", author);
+            redirectView.setUrl("/authors/create");
         }
-        return new RedirectView("/authors");
+        return redirectView;
     }
 
     @GetMapping("/edit/{id_author}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editAuthor(@PathVariable Integer id_author) {
+    public ModelAndView editAuthor(@PathVariable Integer id_author, HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView("authorform");
-        modelAndView.addObject("author", authorServiceImpl.findAuthorById(id_author));
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("author", flashMap.get("author"));
+        } else {
+            modelAndView.addObject("author", authorServiceImpl.findAuthorById(id_author));
+        }
         modelAndView.addObject("title", "Edicion de Autor");
         modelAndView.addObject("action", "modify");
         return modelAndView;
@@ -85,14 +141,17 @@ public class AuthorController {
 
     @PostMapping("/modify")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modifyAuthor(@RequestParam Integer id_author, @RequestParam String name, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+    public RedirectView modifyAuthor(@ModelAttribute AuthorEntity author, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/authors");
         try {
-            authorServiceImpl.updateAuthor(id_author, name, activate);
+            authorServiceImpl.validateFormAndUpdate(author.getId_author(), author.getName(), author.getActivate());
             redirectAttributes.addFlashAttribute("success", "El autor ha sido modificado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
+            redirectAttributes.addFlashAttribute("author", author);
+            redirectView.setUrl("/edit/{id_author}");
         }
-        return new RedirectView("/authors");
+        return redirectView;
     }
 
     @PostMapping("/delete/{id_author}")

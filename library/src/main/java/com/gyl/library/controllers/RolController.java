@@ -28,7 +28,7 @@ public class RolController {
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('SUPER')")
-    public ModelAndView createRol(HttpServletRequest request, Principal principal) {
+    public ModelAndView createRol(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("rolform");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         if (flashMap != null) {

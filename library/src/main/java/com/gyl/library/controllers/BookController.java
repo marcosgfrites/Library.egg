@@ -37,7 +37,7 @@ public class BookController {
     }
 
     @GetMapping("/allbyauthor/{id_author}")
-    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author) {
+    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByAuthor(authorServiceImpl.findAuthorById(id_author)));
         return modelAndView;
@@ -72,7 +72,7 @@ public class BookController {
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView createBook() {
+    public ModelAndView createBook() throws Exception {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", new BookEntity());
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
@@ -102,7 +102,7 @@ public class BookController {
 
     @GetMapping("/edit/{id_book}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editBook(@PathVariable Integer id_book, Principal principal) {
+    public ModelAndView editBook(@PathVariable Integer id_book, Principal principal) throws Exception {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", bookServiceImpl.findBookById(id_book));
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());

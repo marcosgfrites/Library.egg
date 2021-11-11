@@ -48,10 +48,8 @@ public class RolServiceImpl implements RolService {
 
     public void validateFormAndCreate(String namerol, UserEntity user) throws Exception {
         if (this.rolExist(namerol, user)) {
-            System.out.println("Dentro de validateFormAndCreate entra al IF");
             throw new Exception("Ya se ha asignado el rol deseado al usuario seleccionado.");
         }
-        System.out.println("Dentro de validateFormAndCreate NO entra al IF");
         this.createRol(namerol, user);
     }
 
