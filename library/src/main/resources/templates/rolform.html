@@ -9,32 +9,7 @@
 </head>
 <body>
 
-<header name="header">
-    <div class="px-3 py-2 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" th:href="@{https://www.linkedin.com/in/marcos-g-frites-debenedetti/}" target="_blank">
-                    <svg class="bi me-2" width="40" height="32" role="img" aria-label="Linkedin">
-                        <h1>
-                            <i class="fab fa-linkedin"></i>
-                        </h1>
-                    </svg>
-                </a>
-                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                    <li>
-                        <a class="nav-link text-white" th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Iniciar sesión</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user-plus"></i> Registrarse</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="px-3 py-2 border-bottom mb-3">
-        <div class="container d-flex flex-wrap justify-content-center"></div>
-    </div>
-</header>
+<header sec:authorize="isAuthenticated()" th:replace="layout/template :: header"></header>
 
 <div class="container" name="alert">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -102,9 +77,7 @@
     </div>
 </section>
 
-<footer class="py-3 my-4" name="footer">
-    <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://github.com/marcosgfrites}" target="_blank">ASC Marcos Frites</a></p>
-</footer>
+<footer sec:authorize="isAuthenticated()" th:replace="layout/template :: footer"></footer>
 
 <div th:replace="layout/template :: myscripts2"></div>
 

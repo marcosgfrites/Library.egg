@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <a th:href="@{/editorials/create}" id="btnCreateEditorial" class="btn btn-success btn-block">
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/editorials/create}" id="btnCreateEditorial" class="btn btn-success btn-block">
                     <i class="fas fa-plus"></i> [[#{action.add}]]
                 </a>
             </div>

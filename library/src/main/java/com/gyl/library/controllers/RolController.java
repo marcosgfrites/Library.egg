@@ -38,11 +38,6 @@ public class RolController {
         } else {
             modelAndView.addObject("rol", new RolEntity());
         }
-/*
-        if (principal != null) {
-            modelAndView.setViewName("redirect:/");
-        }
-*/
         modelAndView.addObject("users", userServiceImpl.getAllUsersActivated());
         return modelAndView;
     }

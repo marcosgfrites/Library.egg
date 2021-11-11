@@ -27,12 +27,8 @@
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
               <a class="nav-link text-white">
-                <span>Bienvenido: </span>
-<!--
-                <span sec:authentication="name">User</span>
-                <span th:text="${onlineuser}">User</span>
--->
-                <span th:text="${onlineuser}">User</span>
+                <span class="text-secondary">Bienvenido: </span>
+                <span class="text-secondary" sec:authentication="name"><b>User</b></span>
               </a>
             </li>
             <li>
@@ -62,10 +58,10 @@
               <a class="nav-link text-white" th:href="@{/books}"><i class="fas fa-book"></i> Libros</a>
             </li>
             <li>
-              <a class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user"></i> Usuarios</a>
+              <a sec:authorize="hasRole('ADMIN')" class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user"></i> Usuarios</a>
             </li>
             <li>
-              <a class="nav-link text-white" th:href="@{/roles/create}"><i class="fas fa-user-tag"></i> Roles</a>
+              <a sec:authorize="hasRole('SUPER')" class="nav-link text-white" th:href="@{/roles/create}"><i class="fas fa-user-tag"></i> Roles</a>
             </li>
           </ul>
         </div>
@@ -130,6 +126,12 @@
       </li>
       <li class="nav-item">
         <a class="nav-link px-2 text-muted" th:href="@{/books}">Libros</a>
+      </li>
+      <li class="nav-item">
+        <a sec:authorize="hasRole('ADMIN')" class="nav-link px-2 text-muted" th:href="@{/users/create}">Usuarios</a>
+      </li>
+      <li class="nav-item">
+        <a sec:authorize="hasRole('SUPER')" class="nav-link px-2 text-muted" th:href="@{/roles/create}">Roles</a>
       </li>
     </ul>
     <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://github.com/marcosgfrites}" target="_blank">ASC Marcos Frites</a></p>

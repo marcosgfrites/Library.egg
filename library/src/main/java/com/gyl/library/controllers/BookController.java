@@ -30,39 +30,35 @@ public class BookController {
     private BookServiceImpl bookServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll(Principal principal) {
+    public ModelAndView viewAll() {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksOrderByTitle());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/allbyauthor/{id_author}")
-    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author, Principal principal) {
+    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByAuthor(authorServiceImpl.findAuthorById(id_author)));
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/allbyeditorial/{id_editorial}")
-    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial, Principal principal) {
+    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial) {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByEditorial(editorialServiceImpl.findEditorialById(id_editorial)));
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated(Principal principal) {
+    public ModelAndView viewAllNoActivated() {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksNoActivated());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, Principal principal) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("books");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
@@ -70,21 +66,19 @@ public class BookController {
             modelAndView.addObject("error", flashMap.get("error"));
         }
         modelAndView.addObject("books", bookServiceImpl.getAllBooksActivated());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView createBook(Principal principal) {
+    public ModelAndView createBook() {
         ModelAndView modelAndView = new ModelAndView("bookform");
         modelAndView.addObject("book", new BookEntity());
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
         modelAndView.addObject("title", "Creación de Libro");
         modelAndView.addObject("action", "save");
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 

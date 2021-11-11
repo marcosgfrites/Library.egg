@@ -22,23 +22,21 @@ public class EditorialController {
     private EditorialServiceImpl editorialServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll(Principal principal) {
+    public ModelAndView viewAll() {
         ModelAndView modelAndView = new ModelAndView("editorials");
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsOrderByName());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated(Principal principal) {
+    public ModelAndView viewAllNoActivated() {
         ModelAndView modelAndView = new ModelAndView("editorials");
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsNoActivated());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest, Principal principal) {
+    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView("editorials");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
         if (flashMap != null) {
@@ -46,18 +44,16 @@ public class EditorialController {
             modelAndView.addObject("error", flashMap.get("error"));
         }
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView createEditorial(Principal principal) {
+    public ModelAndView createEditorial() {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", new EditorialEntity());
         modelAndView.addObject("title", "Creación de Editorial");
         modelAndView.addObject("action", "save");
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
@@ -79,12 +75,11 @@ public class EditorialController {
 
     @GetMapping("/edit/{id_editorial}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editEditorial(@PathVariable Integer id_editorial, Principal principal) {
+    public ModelAndView editEditorial(@PathVariable Integer id_editorial) {
         ModelAndView modelAndView = new ModelAndView("editorialform");
         modelAndView.addObject("editorial", editorialServiceImpl.findEditorialById(id_editorial));
         modelAndView.addObject("title", "Edicion de Editorial");
         modelAndView.addObject("action", "modify");
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 

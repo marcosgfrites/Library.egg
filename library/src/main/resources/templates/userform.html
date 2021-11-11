@@ -9,7 +9,9 @@
 </head>
 <body>
 
-<header name="header">
+<header sec:authorize="isAuthenticated()" th:replace="layout/template :: header"></header>
+
+<header sec:authorize="!isAuthenticated()" name="header">
     <div class="px-3 py-2 bg-dark text-white">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -92,14 +94,16 @@
                     <div class="invalid-feedback"> El confirmación de password es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-success" type="submit">Registrarse</button>
+                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Usuario' : 'Registrarse'"></button>
                 </div>
             </form>
         </div>
     </div>
 </section>
 
-<footer class="py-3 my-4" name="footer">
+<footer sec:authorize="isAuthenticated()" th:replace="layout/template :: footer"></footer>
+
+<footer sec:authorize="!isAuthenticated()" class="py-3 my-4" name="footer">
     <p class="text-center text-muted" th:href="@{https://github.com/marcosgfrites}">[[#{template.footer}]] &copy; | <a  class="text-muted text-decoration-none" th:href="@{https://github.com/marcosgfrites}" target="_blank">ASC Marcos Frites</a></p>
 </footer>
 

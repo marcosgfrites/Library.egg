@@ -1,6 +1,5 @@
 package com.gyl.library.controllers;
 
-import com.gyl.library.services.RolServiceImpl;
 import com.gyl.library.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -67,11 +66,6 @@ public class UserController {
             modelAndView.addObject("password", flashMap.get("password"));
             modelAndView.addObject("repassword", flashMap.get("repassword"));
         }
-/*
-        if (principal != null) {
-            modelAndView.setViewName("redirect:/");
-        }
-*/
         modelAndView.addObject("action", "save");
         return modelAndView;
     }

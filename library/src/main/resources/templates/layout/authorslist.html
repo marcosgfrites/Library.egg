@@ -49,17 +49,17 @@
                             <i class="fas fa-eye"></i> [[#{action.booklist}]]
                         </a>
                     </td>
-                    <td class="bg-secondary">
+                    <td sec:authorize="hasRole('ADMIN')" class="bg-secondary">
                         <form method="post" th:action="@{/authors/activate/} + ${author.id_author}">
                             <button class="btn btn-info" type="submit"><i class="fas fa-undo-alt"></i> <th:block th:text="${author.activate == true} ? 'Deshabilitar' : 'Habilitar'"/></button>
                         </form>
                     </td>
-                    <td class="bg-secondary">
+                    <td sec:authorize="hasRole('ADMIN')" class="bg-secondary">
                         <a class="btn btn-warning" th:href="@{/authors/edit/} + ${author.id_author}">
                             <i class="fas fa-edit"></i> [[#{action.edit}]]
                         </a>
                     </td>
-                    <td class="bg-secondary">
+                    <td sec:authorize="hasRole('SUPER')" class="bg-secondary">
                         <form method="post" th:action="@{/authors/delete/} + ${author.id_author}">
                             <button class="btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i> [[#{action.delete}]]</button>
                         </form>
