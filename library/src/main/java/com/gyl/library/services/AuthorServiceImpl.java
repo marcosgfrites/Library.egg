@@ -75,7 +75,7 @@ public class AuthorServiceImpl implements AuthorService {
             if (author == null) {
                 throw new Exception("No se ha encontrado un Autor con el número de ID indicado");
             } else {
-                return  authorRepository.findById(id_author).get();
+                return author;
             }
         } catch (Exception exception) {
             throw new Exception("Algo ha sucedido y no se ha podido procesar la búsqueda de Autor, por ID, en la base de datos." +
@@ -112,11 +112,7 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorEntity findAuthorByName(String name) throws Exception {
         try {
             AuthorEntity author = authorRepository.findByNameIgnoreCase(name);
-            if (author == null) {
-                throw new Exception("No se ha ecnontrado un Autor con el nombre indicado.");
-            } else {
-                return author;
-            }
+            return author;
         } catch (Exception exception) {
             throw new Exception("Algo ha sucedido y no se ha podido procesar la búsqueda de Autor, por nombre, en la base de datos." +
                     "\n - Descripción del error: " + exception.getMessage());
@@ -125,7 +121,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     public boolean authorExist(String name) throws Exception {
         try {
-            if (this.findAuthorByName(name) != null) {
+            if (this.findAuthorByName(name.toUpperCase()) != null) {
                 return true;
             }
             return false;
@@ -138,7 +134,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void validateFormAndCreate(String name) throws Exception {
         try {
             if (this.authorExist(name)) {
-                throw new Exception("Ya existe un autor registrado con el mismo nombre.");
+                throw new Exception("Ya existe un Autor registrado con el mismo nombre.");
             }
             this.createAuthor(name);
         } catch (Exception exception) {
@@ -149,7 +145,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void validateFormAndUpdate(Integer id_author, String name, Boolean activate) throws Exception {
         try {
             if (this.authorExist(name)) {
-                throw new Exception("Ya existe un autor registrado con el mismo nombre.");
+                throw new Exception("Ya existe un Autor registrado con el mismo nombre.");
             }
             this.updateAuthor(id_author, name, activate);
         } catch (Exception exception) {

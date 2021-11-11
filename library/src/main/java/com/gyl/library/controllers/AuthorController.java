@@ -126,7 +126,6 @@ public class AuthorController {
     public ModelAndView editAuthor(@PathVariable Integer id_author, HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView("authorform");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-
         if (flashMap != null) {
             modelAndView.addObject("success", flashMap.get("success"));
             modelAndView.addObject("error", flashMap.get("error"));
@@ -149,7 +148,7 @@ public class AuthorController {
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
             redirectAttributes.addFlashAttribute("author", author);
-            redirectView.setUrl("/edit/{id_author}");
+            redirectView.setUrl("/authors/edit/" + author.getId_author());
         }
         return redirectView;
     }
@@ -157,18 +156,20 @@ public class AuthorController {
     @PostMapping("/delete/{id_author}")
     @PreAuthorize("hasRole('SUPER')")
     public RedirectView deleteAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/authors");
         try {
             authorServiceImpl.deleteAuthor(id_author);
             redirectAttributes.addFlashAttribute("success", "El autor ha sido eliminado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return new RedirectView("/authors");
+        return redirectView;
     }
 
     @PostMapping("/activate/{id_author}")
     @PreAuthorize("hasRole('ADMIN')")
     public RedirectView activateAuthor(@PathVariable Integer id_author, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/authors");
         try {
             String aux = "";
             AuthorEntity authorEntity = authorServiceImpl.findAuthorById(id_author);
@@ -183,7 +184,7 @@ public class AuthorController {
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return new RedirectView("/authors");
+        return redirectView;
     }
 
 }

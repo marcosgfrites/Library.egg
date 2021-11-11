@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @GetMapping("/allbyeditorial/{id_editorial}")
-    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial) {
+    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
         modelAndView.addObject("books", bookServiceImpl.getAllBooksByEditorial(editorialServiceImpl.findEditorialById(id_editorial)));
         return modelAndView;
