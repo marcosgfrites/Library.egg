@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -30,51 +29,133 @@ public class BookController {
     private BookServiceImpl bookServiceImpl;
 
     @GetMapping("/all")
-    public ModelAndView viewAll() {
+    public ModelAndView viewAll(HttpServletRequest request, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
-        modelAndView.addObject("books", bookServiceImpl.getAllBooksOrderByTitle());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("books", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("books", null);
+        } else {
+            try {
+                modelAndView.addObject("books", bookServiceImpl.getAllBooksOrderByTitle());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/books");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping("/allbyauthor/{id_author}")
-    public ModelAndView viewAllByAuthor(@PathVariable Integer id_author) throws Exception {
+    public ModelAndView viewAllByAuthor(HttpServletRequest request, @RequestParam(required = false) String error, @PathVariable Integer id_author) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
-        modelAndView.addObject("books", bookServiceImpl.getAllBooksByAuthor(authorServiceImpl.findAuthorById(id_author)));
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("books", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("books", null);
+        } else {
+            try {
+                modelAndView.addObject("books", bookServiceImpl.getAllBooksByAuthor(authorServiceImpl.findAuthorById(id_author)));
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/books");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping("/allbyeditorial/{id_editorial}")
-    public ModelAndView viewAllByEditorial(@PathVariable Integer id_editorial) throws Exception {
+    public ModelAndView viewAllByEditorial(HttpServletRequest request, @RequestParam(required = false) String error, @PathVariable Integer id_editorial) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
-        modelAndView.addObject("books", bookServiceImpl.getAllBooksByEditorial(editorialServiceImpl.findEditorialById(id_editorial)));
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("books", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("books", null);
+        } else {
+            try {
+                modelAndView.addObject("books", bookServiceImpl.getAllBooksByEditorial(editorialServiceImpl.findEditorialById(id_editorial)));
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/books");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping("/activatefalse")
-    public ModelAndView viewAllNoActivated() {
+    public ModelAndView viewAllNoActivated(HttpServletRequest request, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
-        modelAndView.addObject("books", bookServiceImpl.getAllBooksNoActivated());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("books", null);
+        }
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("books", null);
+        } else {
+            try {
+                modelAndView.addObject("books", bookServiceImpl.getAllBooksNoActivated());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/books");
+            }
+        }
         return modelAndView;
     }
 
     @GetMapping
-    public ModelAndView viewAllActivated(HttpServletRequest httpServletRequest) {
+    public ModelAndView viewAllActivated(HttpServletRequest request, @RequestParam(required = false) String error) throws Exception {
         ModelAndView modelAndView = new ModelAndView("books");
-        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(httpServletRequest);
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         if (flashMap != null) {
             modelAndView.addObject("success", flashMap.get("success"));
             modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("books", null);
         }
-        modelAndView.addObject("books", bookServiceImpl.getAllBooksActivated());
+        if (error != null) {
+            modelAndView.addObject("error", error);
+            modelAndView.addObject("books", null);
+        } else {
+            try {
+                modelAndView.addObject("books", bookServiceImpl.getAllBooksActivated());
+            } catch (Exception exception) {
+                modelAndView.addObject("error", exception.getMessage());
+                modelAndView.setViewName("redirect:/books");
+            }
+        }
         return modelAndView;
     }
 
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView createBook() throws Exception {
+    public ModelAndView createBook(HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView("bookform");
-        modelAndView.addObject("book", new BookEntity());
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("book", flashMap.get("book"));
+        } else {
+            modelAndView.addObject("book", new BookEntity());
+        }
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
         modelAndView.addObject("title", "Creación de Libro");
@@ -84,62 +165,72 @@ public class BookController {
 
     @PostMapping("/save")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView saveBook(@RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+    public RedirectView saveBook(@ModelAttribute BookEntity book, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/books");
         try {
-            if (!bookServiceImpl.bookExist(isbn)) {
-                Integer remainingCopies = copies; // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
-                Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
-                bookServiceImpl.createBook(isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
-                redirectAttributes.addFlashAttribute("success", "El libro ha sido creado exitosamente!");
-            } else {
-                redirectAttributes.addFlashAttribute("warning", "Ya existe un libro registrado con el mismo ISBN.");
-            }
+            Integer remainingCopies = book.getCopies(); // igualo la cantidad de ejemplares restantes del libro con la de la ejemplares ingresados del mismo
+            Integer loanedCopies = 0; // al ser un libro nuevo, establezco que la cantidad de ejemplares prestados es igual a 0
+            bookServiceImpl.validateFormAndCreate(book.getIsbn(), book.getTitle(), book.getYear(), book.getCopies(), loanedCopies, remainingCopies, book.getAuthor(), book.getEditorial());
+            redirectAttributes.addFlashAttribute("success", "El libro ha sido creado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
+            redirectAttributes.addFlashAttribute("book", book);
+            redirectView.setUrl("/books/create");
         }
-        return new RedirectView("/books");
+        return redirectView;
     }
 
     @GetMapping("/edit/{id_book}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView editBook(@PathVariable Integer id_book, Principal principal) throws Exception {
+    public ModelAndView editBook(@PathVariable Integer id_book, HttpServletRequest request) throws Exception {
         ModelAndView modelAndView = new ModelAndView("bookform");
-        modelAndView.addObject("book", bookServiceImpl.findBookById(id_book));
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        if (flashMap != null) {
+            modelAndView.addObject("success", flashMap.get("success"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("book", flashMap.get("book"));
+        } else {
+            modelAndView.addObject("book", bookServiceImpl.findBookById(id_book));
+        }
         modelAndView.addObject("authors", authorServiceImpl.getAllAuthorsActivated());
         modelAndView.addObject("editorials", editorialServiceImpl.getAllEditorialsActivated());
         modelAndView.addObject("title", "Edicion de Libro");
         modelAndView.addObject("action", "modify");
-        modelAndView.addObject("onlineuser", principal.getName());
         return modelAndView;
     }
 
     @PostMapping("/modify")
     @PreAuthorize("hasRole('ADMIN')")
-    public RedirectView modifyBook(@RequestParam Integer id_book, @RequestParam Long isbn, @RequestParam String title, @RequestParam Integer year, @RequestParam Integer copies, @RequestParam Integer loanedCopies, @RequestParam Integer remainingCopies, @RequestParam("author") Integer id_author, @RequestParam("editorial") Integer id_editorial, @RequestParam Boolean activate, RedirectAttributes redirectAttributes) {
+    public RedirectView modifyBook(@ModelAttribute BookEntity book, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/books");
         try {
-            bookServiceImpl.updateBook(id_book, isbn, title, year, copies, loanedCopies, remainingCopies, authorServiceImpl.findAuthorById(id_author), editorialServiceImpl.findEditorialById(id_editorial), activate);
+            bookServiceImpl.validateFormAndUpdate(book.getId_book(), book.getIsbn(), book.getTitle(), book.getYear(), book.getYear(), book.getLoanedCopies(), book.getRemainingCopies(), book.getAuthor(), book.getEditorial(), book.getActivate());
             redirectAttributes.addFlashAttribute("success", "El libro ha sido modificado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
+            redirectAttributes.addFlashAttribute("book", book);
+            redirectView.setUrl("/books/edit/" + book.getId_book());
         }
-        return new RedirectView("/books");
+        return redirectView;
     }
 
     @PostMapping("/delete/{id_book}")
     @PreAuthorize("hasRole('SUPER')")
     public RedirectView deleteBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/books");
         try {
             bookServiceImpl.deleteBook(id_book);
             redirectAttributes.addFlashAttribute("success", "El libro ha sido eliminado exitosamente!");
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return new RedirectView("/books");
+        return redirectView;
     }
 
     @PostMapping("/activate/{id_book}")
     @PreAuthorize("hasRole('ADMIN')")
     public RedirectView activateBook(@PathVariable Integer id_book, RedirectAttributes redirectAttributes) {
+        RedirectView redirectView = new RedirectView("/books");
         try {
             String aux = "";
             BookEntity bookEntity = bookServiceImpl.findBookById(id_book);
@@ -154,7 +245,7 @@ public class BookController {
         } catch (Exception exception) {
             redirectAttributes.addFlashAttribute("error", exception.getMessage());
         }
-        return new RedirectView("/books");
+        return redirectView;
     }
 
 }
