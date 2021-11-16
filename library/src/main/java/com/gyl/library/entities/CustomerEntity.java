@@ -18,49 +18,31 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "book", schema = "libreriaweb")
+@Table(name = "customer", schema = "libreriaweb")
 @EntityListeners(AuditingEntityListener.class)
-public class BookEntity implements Serializable {
+public class CustomerEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_book;
+    private Integer id_customer;
 
     @NotNull
     @Column(nullable = false)
-    private Long isbn;
+    private Long dni;
 
     @NotEmpty
     @Column(nullable = false)
-    private String title;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer year;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer copies;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer loanedCopies;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer remainingCopies;
+    private String firstName;
 
     @NotEmpty
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private AuthorEntity author;
+    @Column(nullable = false)
+    private String lastName;
 
     @NotEmpty
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private EditorialEntity editorial;
+    @Column(nullable = false)
+    private String phone;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -73,7 +55,7 @@ public class BookEntity implements Serializable {
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private Boolean activate;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "customer")
     private List<LoanEntity> loans;
 
 }

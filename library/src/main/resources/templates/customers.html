@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Clientes</title>
+</head>
+<body>
+
+<header th:replace="layout/template :: header"></header>
+
+<section th:replace="layout/customerbuttonslist :: customerbuttonslist"></section>
+
+<div th:replace="layout/template :: alert"></div>
+
+<section th:replace="layout/customerslist :: customerslist"></section>
+
+<div th:replace="layout/template :: btnarriba"></div>
+
+<footer th:replace="layout/template :: footer"></footer>
+
+</body>
+</html>

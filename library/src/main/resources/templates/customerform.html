@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Creación de Clientes</title>
+</head>
+<body>
+<header th:replace="layout/template :: header"></header>
+
+<div th:replace="layout/template :: alert"></div>
+
+<section name="customerform">
+    <div class="container my-2">
+        <h3 th:text="${title}"></h3>
+        <hr class="my-2"/>
+    </div>
+    <div class="container-md bg-secondary">
+        <div class="my-5 pt-1" name="divform">
+            <div class="mb-3 mt-3">
+                <h5 class="text-white">Datos del Cliente</h5>
+                <hr class="text-white"/>
+            </div>
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/customers/__${action}__}" th:object="${customer}">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" id="id_customer" th:field="*{id_customer}">
+                </div>
+                <div class="mb-3">
+                    <label for="firstName" class="form-label text-white">[[#{customer.firstName}]]</label>
+                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.customer.firstName}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label text-white">[[#{customer.lastName}]]</label>
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.customer.lastName}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="dni" class="form-label text-white">[[#{customer.dni}]]</label>
+                    <input type="number" class="form-control" id="dni" th:field="*{dni}" required>
+                    <div class="invalid-feedback"> [[#{NotNull.customer.dni}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label text-white">[[#{customer.phone}]]</label>
+                    <input type="text" class="form-control" id="phone" th:field="*{phone}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.customer.phone}]] </div>
+                </div>
+                <div class="mb-3">
+                    <select hidden id="activate" class="form-select" th:field="*{activate}">
+                        <option value="" selected>Elija una opcion...</option>
+                        <option value="true">Habilitado</option>
+                        <option value="false">Deshabilitado</option>
+                    </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.customer.activate}]] </div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Cliente' : 'Guardar Cambios'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div th:replace="layout/template :: btnarriba"></div>
+
+<footer th:replace="layout/template :: footer"></footer>
+
+<div th:replace="layout/template :: myscripts2"></div>
+
+</body>
+</html>

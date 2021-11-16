@@ -88,4 +88,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<UserEntity> getAllUsersActivated() {
         return userRepository.findByActivateTrueOrderByUsernameAsc();
     }
+
 }

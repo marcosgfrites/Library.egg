@@ -58,6 +58,9 @@
               <a class="nav-link text-white" th:href="@{/books}"><i class="fas fa-book"></i> Libros</a>
             </li>
             <li>
+              <a class="nav-link text-white" th:href="@{/customers}"><i class="fas fa-user-circle"></i> Clientes</a>
+            </li>
+            <li>
               <a sec:authorize="hasRole('ADMIN')" class="nav-link text-white" th:href="@{/users/create}"><i class="fas fa-user"></i> Usuarios</a>
             </li>
             <li>
@@ -126,6 +129,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link px-2 text-muted" th:href="@{/books}">Libros</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link px-2 text-muted" th:href="@{/customers}">Clientes</a>
       </li>
       <li class="nav-item">
         <a sec:authorize="hasRole('ADMIN')" class="nav-link px-2 text-muted" th:href="@{/users/create}">Usuarios</a>
