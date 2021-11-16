@@ -161,4 +161,12 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    public void validateFormAndUpdate(Integer id_customer, Long dni, String firstName, String lastName, String phone, Boolean activate) throws Exception {
+        try {
+            this.updateCustomer(id_customer, dni, firstName, lastName, phone, activate);
+        } catch (Exception exception) {
+            throw new Exception(exception.getMessage());
+        }
+    }
+
 }

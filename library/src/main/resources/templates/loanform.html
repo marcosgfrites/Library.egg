@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/template :: head">
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="Marcos G. Frites" name="author"/>
+    <title>LibraryGyL - Creación de Préstamos</title>
+</head>
+<body>
+<header th:replace="layout/template :: header"></header>
+
+<div th:replace="layout/template :: alert"></div>
+
+<section name="loanform">
+    <div class="container my-2">
+        <h3 th:text="${title}"></h3>
+        <hr class="my-2"/>
+    </div>
+    <div class="container-md bg-secondary">
+        <div class="my-5 pt-1" name="divform">
+            <div class="mb-3 mt-3">
+                <h5 class="text-white">Datos del Préstamo</h5>
+                <hr class="text-white"/>
+            </div>
+            <form class="row g-3 needs-validation" novalidate action="" id="form" method="POST" autocomplete="off" th:action="@{/loans/__${action}__}" th:object="${loan}">
+                <div class="mb-3">
+                    <input type="hidden" class="form-control" id="id_loan" th:field="*{id_loan}">
+                </div>
+                <div class="mb-3">
+                    <label for="loanDate" class="form-label text-white">[[#{loan.loanDate}]]</label>
+                    <input type="date" class="form-control" id="loanDate" th:field="*{loanDate}" required>
+                    <div class="invalid-feedback"> [[#{NotEmpty.loan.loanDate}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="returnDate" class="form-label text-white">[[#{loan.returnDate}]]</label>
+                    <input type="date" class="form-control" id="returnDate" th:field="*{returnDate}" required>
+                    <div class="invalid-feedback"> [[#{NotNull.loan.returnDate}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="book" class="form-label text-white">[[#{loan.book}]]</label>
+                    <select id="book" class="form-select" th:field="*{book}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option th:each="book : ${books}" th:text="${book.title}" th:value="${book.id_book}">[[${book.title}]]</option>
+                    </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.loan.book}]] </div>
+                </div>
+                <div class="mb-3">
+                    <label for="customer" class="form-label text-white">[[#{loan.customer}]]</label>
+                    <select id="customer" class="form-select" th:field="*{customer}" required>
+                        <option value="" selected>Elija una opcion...</option>
+                        <option th:each="customer : ${customers}" th:text="${customer.lastName} + ${customer.fistName}" th:value="${customer.id_customer}">[[${customer.lastName} + ${customer.firstName}]]</option>
+                    </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.loan.customer}]] </div>
+                </div>
+                <div class="mb-3">
+                    <select hidden id="activate" class="form-select" th:field="*{activate}">
+                        <option value="" selected>Elija una opcion...</option>
+                        <option value="true">Habilitado</option>
+                        <option value="false">Deshabilitado</option>
+                    </select>
+                    <div class="invalid-feedback"> [[#{NotEmpty.loan.activate}]] </div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success" type="submit" th:text="${action == 'save'} ? 'Crear Préstamo' : 'Guardar Cambios'"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div th:replace="layout/template :: btnarriba"></div>
+
+<footer th:replace="layout/template :: footer"></footer>
+
+<div th:replace="layout/template :: myscripts2"></div>
+
+</body>
+</html>

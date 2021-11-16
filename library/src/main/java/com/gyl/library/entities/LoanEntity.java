@@ -27,9 +27,11 @@ public class LoanEntity  implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_loan;
 
+    @NotEmpty
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate loanDate;
 
+    @NotEmpty
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate returnDate;
 
