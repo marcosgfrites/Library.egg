@@ -36,7 +36,7 @@
                     <th th:text="#{loan.loanDate}">Fecha de Préstamo</th>
                     <th th:text="#{loan.returnDate}">Fecha de Devolución</th>
                     <th th:text="#{loan.book}">Libro (Título)</th>
-                    <th th:text="#{loan.user}">Cliente (Apellido y Nombre)</th>
+                    <th th:text="#{loan.customer}">Cliente (Apellido y Nombre)</th>
                     <th th:text="#{loan.activate}">Estado</th>
                     <th sec:authorize="hasRole('ADMIN')" colspan="3" scope="colgroup">Acciones</th>
                 </tr>
@@ -48,11 +48,11 @@
                     <td class="bg-secondary">[[${loan.loanDate}]]</td>
                     <td class="bg-secondary">[[${loan.returnDate}]]</td>
                     <td class="bg-secondary">[[${loan.book.title}]]</td>
-                    <td class="bg-secondary">[[${loan.user.lastName}]] [[${loan.user.firstName}]]</td>
+                    <td class="bg-secondary">[[${loan.customer.lastName} + ' ' + ${loan.customer.firstName}]]</td>
                     <td class="bg-secondary" th:text="${loan.activate == true} ? 'Pendiente' : 'Devuelto'">[[${loan.activate}]]</td>
                     <td sec:authorize="hasRole('ADMIN')" class="bg-secondary">
                         <form method="post" th:action="@{/loans/activate/} + ${loan.id_loan}">
-                            <button class="btn btn-info" type="submit"><i class="fas fa-undo-alt"></i> <th:block th:text="${customer.activate == true} ? 'Deshabilitar' : 'Habilitar'"/></button>
+                            <button class="btn btn-info" type="submit"><i class="fas fa-undo-alt"></i> <th:block th:text="${loan.activate == true} ? 'Finalizar préstamo' : 'Volver a pendiente'"/></button>
                         </form>
                     </td>
                     <td sec:authorize="hasRole('ADMIN')" class="bg-secondary">

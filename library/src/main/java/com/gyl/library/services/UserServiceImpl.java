@@ -2,6 +2,7 @@ package com.gyl.library.services;
 
 import com.gyl.library.entities.RolEntity;
 import com.gyl.library.entities.UserEntity;
+import com.gyl.library.repositories.RolRepository;
 import com.gyl.library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     UserRepository userRepository;
 
     @Autowired
+    RolRepository rolRepository;
+
+    @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
     private final String message = "El usuario ingresado no existe. %s";
@@ -35,7 +39,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setUsername(username.toUpperCase());
         user.setPassword(passwordEncoder.encode(password));
         user.setActivate(true);
-        userRepository.save(user);
+
+        RolEntity rol = new RolEntity();
+        rol.setNamerol("USER");
+        rol.setUser(userRepository.save(user));
+        rol.setActivate(true);
+        rolRepository.save(rol);
     }
 
     @Override

@@ -68,6 +68,21 @@
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div class="col">
+                <div class="card shadow-sm">
+                    <div>
+                        <img class="rounded mx-auto d-block my-5" th:src="@{/img/loans.png}" alt="Gestion de Préstamos" width="200" height="200">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-text">[[#{entity.loan}]]</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a role="button" class="btn btn-lg btn-outline-secondary" th:href="@{/loans}"><i class="fas fa-eye"></i></a>
+                                <a sec:authorize="hasRole('ADMIN')" role="button" class="btn btn-lg btn-outline-success" th:href="@{/loans/create}"><i class="fas fa-plus"></i></a>
+                            </div>
+                            <small class="text-muted">CRUD de Préstamos</small>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <div class="card shadow-sm">
@@ -81,7 +96,7 @@
                                 <a role="button" class="btn btn-lg btn-outline-secondary" th:href="@{/customers}"><i class="fas fa-eye"></i></a>
                                 <a sec:authorize="hasRole('ADMIN')" role="button" class="btn btn-lg btn-outline-success" th:href="@{/customers/create}"><i class="fas fa-plus"></i></a>
                             </div>
-                            <small class="text-muted">CRUD de Editoriales</small>
+                            <small class="text-muted">CRUD de Clientes</small>
                         </div>
                     </div>
                 </div>

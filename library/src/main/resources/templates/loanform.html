@@ -49,7 +49,7 @@
                     <label for="customer" class="form-label text-white">[[#{loan.customer}]]</label>
                     <select id="customer" class="form-select" th:field="*{customer}" required>
                         <option value="" selected>Elija una opcion...</option>
-                        <option th:each="customer : ${customers}" th:text="${customer.lastName} + ${customer.fistName}" th:value="${customer.id_customer}">[[${customer.lastName} + ${customer.firstName}]]</option>
+                        <option th:each="customer : ${customers}" th:text="${customer.lastName} + ' ' + ${customer.firstName} + ' (' + ${customer.dni} + ')'" th:value="${customer.id_customer}">[[${customer.lastName} + ${customer.firstName}]]</option>
                     </select>
                     <div class="invalid-feedback"> [[#{NotEmpty.loan.customer}]] </div>
                 </div>
