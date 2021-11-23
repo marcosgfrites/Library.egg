@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void createUser(String username, String password) throws Exception;
-    UserEntity findByUsernameIgnoreCase(String username);
+    void createUser(String username, String mail, String password) throws Exception;
     List<UserEntity> getAllUsersActivated() throws Exception;
 
 }

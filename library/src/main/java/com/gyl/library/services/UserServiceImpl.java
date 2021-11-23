@@ -30,13 +30,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     private final String message = "El usuario ingresado no existe. %s";
 
     @Override
     @Transactional
-    public void createUser(String username, String password){
+    public void createUser(String username, String mail, String password){
         UserEntity user = new UserEntity();
         user.setUsername(username.toUpperCase());
+        user.setMail(mail.toUpperCase());
         user.setPassword(passwordEncoder.encode(password));
         user.setActivate(true);
 
@@ -45,12 +49,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         rol.setUser(userRepository.save(user));
         rol.setActivate(true);
         rolRepository.save(rol);
-    }
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserEntity findByUsernameIgnoreCase(String username) {
-        return userRepository.findByUsernameIgnoreCase(username.toUpperCase()).get();
+        emailService.sendMail(username, mail);
     }
 
     @Override
@@ -75,21 +75,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new User(userEntity.getUsername(), userEntity.getPassword(), roles);
     }
 
-    public boolean userExist(String username) {
+    public boolean usernameExist(String username) {
         if (userRepository.findByUsernameIgnoreCase(username).orElse(null) != null) {
             return true;
         }
         return false;
     }
 
-    public void validateFormAndCreate(String username, String password, String repassword) throws Exception {
-        if (this.userExist(username)) {
+    public boolean mailExist(String mail) {
+        if (userRepository.findByMailIgnoreCase(mail).orElse(null) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public void validateFormAndCreate(String username, String mail, String password, String repassword) throws Exception {
+        if (this.usernameExist(username)) {
             throw new Exception("Ya existe un usuario registrado con el mismo username.");
+        }
+        if (this.mailExist(mail)) {
+            throw new Exception("Ya existe un usuario registrado con el mismo mail.");
         }
         if (!(password.equals(repassword))) {
             throw new Exception("La password y su confirmación no coinciden.");
         }
-        this.createUser(username, password);
+        this.createUser(username, mail, password);
     }
 
     @Override

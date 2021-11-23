@@ -84,6 +84,11 @@
                     <div class="invalid-feedback"> El username es un campo obligatorio </div>
                 </div>
                 <div class="mb-3">
+                    <label for="mail" class="form-label text-white">Email</label>
+                    <input type="email" class="form-control" id="mail" th:placeholder="'Ingrese un mail de usuario'" th:name="mail" th:value="${mail}" required/>
+                    <div class="invalid-feedback"> El mail es un campo obligatorio </div>
+                </div>
+                <div class="mb-3">
                     <label for="password" class="form-label text-white">Contraseña</label>
                     <input type="password" class="form-control" id="password" th:placeholder="'Ingrese una contraseña'" th:name="password" th:value="${password}" required/>
                     <div class="invalid-feedback"> El password es un campo obligatorio </div>
