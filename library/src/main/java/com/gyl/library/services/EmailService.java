@@ -28,4 +28,16 @@ public class EmailService {
         sender.send(message);
     }
 
+    //este método produce otro hilo para enviar el mail. Funciona de manera asíncrona pero sin utilizar notaciones Spring
+    public void sendMailByThread(String username, String mailTo) {
+        new Thread(() -> {
+            SimpleMailMessage message = new SimpleMailMessage(); //si vamos a enviar un HTML o imágenes hay que usar "MimeMessage message = new MimeMessage();"
+            message.setTo(mailTo);
+            message.setFrom(fromMail);
+            message.setSubject(SUBJECT);
+            message.setText("¡Hola "+ (username.toUpperCase()) + "!\n¡Bienvenido a nuestra página!\n¡Gracias por registrarte!");
+            sender.send(message);
+        }).start();
+    }
+
 }
